@@ -79,7 +79,7 @@ export default function RequestCard({ request, onEdit, onDelivery }) {
 
     return (
         <div style={{ position: "relative" }}>
-            <Card sx={{ mb: 2, background: isRequestCompleted ? "#B3B3B3" : "inherit" }}>
+            <Card sx={{ mb: 2, background: isRequestCompleted ? "#dbdbdb" : "inherit" }}>
                 {/* {isRequestCompleted && (
                     <div className="stamp">已完成</div>
                 )} */}
@@ -111,14 +111,14 @@ export default function RequestCard({ request, onEdit, onDelivery }) {
                         <CustomProgressBar percentage={(request.headcount_got / request.headcount_need) * 100} />
                     </Box>
                 </CardContent>
-                {!isRequestCompleted && <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
+                {!isRequestCompleted ? <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Button variant="outlined" size="small" onClick={() => onEdit(request)} disabled={isRequestCompleted}>
                         修改需求
                     </Button>
                     <Button size="small" variant="contained" onClick={() => onDelivery(request)} disabled={isRequestCompleted}>
                         我要加入
                     </Button>
-                </CardActions>}
+                </CardActions> : <CardActions><Typography sx={{ m: 1 }} color="primary">如仍有需求，請重新點選新增需求</Typography></CardActions>}
             </Card>
         </div>
     );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, TextField, Box
+  Button, TextField, Box, Typography
 } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
@@ -18,20 +18,22 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
     assignment_notes: "",
     headcount_need: 1,
     headcount_unit: "",
-    role_name: ""
+    role_name: "",
+    role_type: ""
   });
   useEffect(() => {
     console.log(request)
     if (request) setForm(request);
   }, [request]);
-
+  const [isLoading, setIsLoading] = useState(false)
+  const [displayConfirmDialog, setDisplayConfirmDialog] = useState(false)
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   async function onConfirm() {
-
+    setIsLoading(true)
     const payload = {
       ...form, headcount_need: Number(form.headcount_need)
     }
@@ -46,6 +48,8 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
       }
     );
     if (result.success) {
+      setIsLoading(false)
+      setDisplayConfirmDialog(false)
       onSubmittedCallback(true)
       setForm({
         org: "",
@@ -58,20 +62,20 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
       })
     }
     else {
+      setIsLoading(false)
+      setDisplayConfirmDialog(false)
       onSubmittedCallback(false)
     }
   }
 
 
   return (
-    <Dialog open={open} fullWidth maxWidth="sm">
+    <><Dialog open={open} fullWidth maxWidth="sm">
       <DialogTitle>修改需求</DialogTitle>
       <DialogContent>
         <Box sx={{ mb: 2, pt: 1 }}>
           <Grid container spacing={2}>
-
             <Grid size={{ xs: 12, md: 6 }}>
-
               <TextField
                 fullWidth required
                 label="單位名稱"
@@ -81,7 +85,6 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-
               <TextField
                 fullWidth
                 label="手機號碼"
@@ -176,7 +179,7 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
         <Button onClick={onClose} color="inherit">取消</Button>
         <Button
           variant="contained"
-          onClick={() => onConfirm(form)}
+          onClick={() => setDisplayConfirmDialog(true)}
           disabled={
             form.address === "" ||
             form.org === "" ||
@@ -190,5 +193,31 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
         </Button>
       </DialogActions>
     </Dialog>
+
+
+
+
+
+      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm">
+        <DialogTitle>確認修改需求</DialogTitle>
+        <DialogContent>
+          <Typography>
+            {request && <>
+              <Typography>請再次確認以下資料是否正確：<br />
+                <b>單位名稱：</b>{form.org}<br />
+                <b>手機號碼：</b>{form.phone}<br />
+                <b>地址：</b>{form.address}<br />
+                <b>備註：</b>{form.assignment_notes}<br />
+                <b>需求：</b>{form.role_type} | {form.role_name} | {form.headcount_need}{form.headcount_unit}
+              </Typography>
+            </>}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDisplayConfirmDialog(false)} color="inherit">返回修改</Button>
+          <Button variant="contained" onClick={() => onConfirm(form)} loading={isLoading}>確認送出</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }

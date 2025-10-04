@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, Typography, Box, Chip, TextField
+  Button, Typography, Box, Chip, TextField, Alert, AlertTitle
 } from "@mui/material";
 import isCompleted from "../../utils/isCompleted";
 import CustomProgressBar from "../Progress";
@@ -31,12 +31,15 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
   const [joinCount, setJoinCount] = React.useState(1);
   const maxNeeded = (!request) ? 0 : request.headcount_need - request.headcount_got;
 
+  const [displayConfirmDialog, setDisplayConfirmDialog] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
 
   async function onConfirm() {
-
+    setIsLoading(true)
     const payload = {
       headcount_got: request.headcount_got + Number(joinCount),
-      is_completed: request.headcount_got + Number(joinCount) === request.headcount_need
+      is_completed: request.headcount_got + Number(joinCount) === request.headcount_need,
+      status: request.headcount_got + Number(joinCount) === request.headcount_need ? "completed" : "active"
     }
     const result = await safeApiRequest(
       `https://guangfu250923.pttapp.cc/human_resources/${request.id}`,
@@ -49,10 +52,15 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
       }
     );
     if (result.success) {
+      setIsLoading(false)
+      setDisplayConfirmDialog(false)
       onSubmittedCallback(true)
       setJoinCount(1)
+
     }
     else {
+      setIsLoading(false)
+      setDisplayConfirmDialog(false)
       onSubmittedCallback(false)
     }
   }
@@ -61,7 +69,7 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
 
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <><Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>人力派遣</DialogTitle>
       <DialogContent>
         {request && <><Typography variant="body2" sx={{ mb: 1 }}>目前人力需求進度</Typography>
@@ -83,7 +91,7 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
             <Box sx={{ mt: 2 }}>
               <TextField
                 fullWidth required
-                label="加入人數"
+                label="加入數量"
                 placeholder=""
                 type="number"
                 value={joinCount}
@@ -95,10 +103,39 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="inherit">取消</Button>
-        <Button variant="contained" onClick={onConfirm}
+        <Button variant="contained" onClick={() => setDisplayConfirmDialog(true)}
           disabled={joinCount < 1 || joinCount > maxNeeded}
         >確認加入</Button>
       </DialogActions>
     </Dialog>
+
+
+
+
+
+
+      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm">
+        <DialogTitle>確認加入 {request && request.org}</DialogTitle>
+        <DialogContent>
+          <Typography>
+            {request && <>
+              <Typography >請再次確認以下資料是否正確：<br />
+                <b>加入數量：</b>{joinCount}{request.headcount_unit}
+              </Typography>
+              <Alert severity="primary" sx={{ mt: 1 }}>
+                <AlertTitle>我們期待你的出現！</AlertTitle>
+                若你誤觸送出而顯示這個畫面，請點選下方的按鈕返回
+              </Alert>
+            </>}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDisplayConfirmDialog(false)} color="inherit">返回修改</Button>
+          <Button variant="contained" onClick={onConfirm} loading={isLoading}>確認加入</Button>
+        </DialogActions>
+      </Dialog>
+
+
+    </>
   );
 }

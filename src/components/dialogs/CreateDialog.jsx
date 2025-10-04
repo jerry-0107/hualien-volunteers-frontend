@@ -29,7 +29,11 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const [displayConfirmDialog, setDisplayConfirmDialog] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
+
   async function onConfirm(newRequest) {
+    setIsLoading(true)
     const payload = {
       ...newRequest,
       headcount_need: Number(newRequest.headcount_need),
@@ -48,6 +52,8 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
     );
     if (result.success) {
       onSubmittedCallback(true)
+      setDisplayConfirmDialog(false)
+      setIsLoading(false)
       setForm({
         org: "",
         phone: "",
@@ -61,11 +67,13 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
     }
     else {
       onSubmittedCallback(false)
+      setDisplayConfirmDialog(false)
+      setIsLoading(false)
     }
   }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <><Dialog open={open} fullWidth maxWidth="sm">
       <DialogTitle>人力需求</DialogTitle>
       <DialogContent>
         <Box sx={{ mb: 2, pt: 1 }}>
@@ -181,7 +189,7 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
         <Button onClick={onClose} color="inherit">取消</Button>
         <Button
           variant="contained"
-          onClick={() => onConfirm(form)}
+          onClick={() => setDisplayConfirmDialog(true)}
           disabled={
             form.address === "" ||
             form.org === "" ||
@@ -196,5 +204,27 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
         </Button>
       </DialogActions>
     </Dialog >
+
+      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm">
+        <DialogTitle>確認新增需求</DialogTitle>
+        <DialogContent>
+          <Typography>
+            <>
+              <Typography>請再次確認以下資料是否正確：<br />
+                <b>單位名稱：</b>{form.org}<br />
+                <b>手機號碼：</b>{form.phone}<br />
+                <b>地址：</b>{form.address}<br />
+                <b>備註：</b>{form.assignment_notes}<br />
+                <b>需求：</b>{form.role_type} | {form.role_name} | {form.headcount_need}{form.headcount_unit}
+              </Typography>
+            </>
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDisplayConfirmDialog(false)} color="inherit">返回修改</Button>
+          <Button variant="contained" onClick={() => onConfirm(form)} loading={isLoading}>確認送出</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
