@@ -97,7 +97,7 @@ export default function App() {
   function onCreateSubmittedCallback(isSuccess) {
     if (isSuccess) {
       setToastMsg("需求已送出!");
-      setOpenEdit(false);
+      setOpenCreate(false);
       loadData(page, false);
     } else {
       setToastMsg("需求送出失敗，請再試一次!");
