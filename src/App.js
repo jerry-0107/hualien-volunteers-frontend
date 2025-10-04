@@ -15,7 +15,8 @@ import DeliveryDialog from "./components/dialogs/DeliveryDialog";
 
 import { safeApiRequest } from "./utils/helpers";
 import isCompleted from "./utils/isCompleted";
-import theme from "./colorPalatte";
+
+import theme from './colorPalatte'
 
 export default function App() {
   const [requests, setRequests] = useState([]);
