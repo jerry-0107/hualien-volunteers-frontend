@@ -1,0 +1,103 @@
+import React from "react";
+import {
+  Dialog, DialogTitle, DialogContent, DialogActions,
+  Button, Typography, Box, Chip, TextField
+} from "@mui/material";
+import isCompleted from "../../utils/isCompleted";
+import CustomProgressBar from "../Progress";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import { safeApiRequest } from "../../utils/helpers";
+
+function getRoleTypeColor(role_type, is_completed) {
+  if (is_completed) return ""
+
+  const TYPE_MAP = {
+    "一般志工": { tag: "一般", cls: "", order: 5 },
+    "清潔/整理": { tag: "清潔/整理", cls: "primary", order: 0 },
+    "醫療照護": { tag: "醫療照護", cls: "error", order: 1 },
+    "後勤支援": { tag: "後勤支援", cls: "success", order: 2 },
+    "專業技術": { tag: "專業技術", cls: "warning", order: 3 },
+    "其他": { tag: "其他", cls: "", order: 4 },
+  };
+  return TYPE_MAP[role_type].cls
+
+}
+export default function DeliveryDialog({ open, onClose, request, onSubmittedCallback = (isSuccess) => { } }) {
+  const isRequestCompleted = isCompleted(request)
+  const theme = useTheme();
+  const isNotPhone = useMediaQuery(theme.breakpoints.up('sm')); //手機以上的螢幕寬度
+
+  const [joinCount, setJoinCount] = React.useState(1);
+  const maxNeeded = (!request) ? 0 : request.headcount_need - request.headcount_got;
+
+
+  async function onConfirm() {
+
+    const payload = {
+      headcount_got: request.headcount_got + Number(joinCount),
+      is_completed: request.headcount_got + Number(joinCount) === request.headcount_need
+    }
+    const result = await safeApiRequest(
+      `https://guangfu250923.pttapp.cc/human_resources/${request.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      }
+    );
+    if (result.success) {
+      onSubmittedCallback(true)
+    }
+    else {
+      onSubmittedCallback(false)
+    }
+  }
+
+
+
+
+  return (
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+      <DialogTitle>人力派遣</DialogTitle>
+      <DialogContent>
+        {request && <><Typography variant="body2" sx={{ mb: 1 }}>目前人力需求進度</Typography>
+          <Box>
+            <Box sx={{ mt: 1, display: (isNotPhone ? "flex" : "block"), justifyContent: "space-between" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Chip size="small" color={getRoleTypeColor(request.role_type, isRequestCompleted)} label={request.role_type} sx={{ mr: 1 }} />
+                <Typography variant="body"><b>{request.role_name}</b>&nbsp;</Typography>
+              </Box>
+              <Box sx={{ mt: (isNotPhone ? 0 : 1) }}>
+                {!isRequestCompleted ?
+                  <>已到位 {request.headcount_got}/{request.headcount_need}{request.headcount_unit}，還需要 <Typography sx={{ display: "inline-block" }} color="error">{request.headcount_need - request.headcount_got}{request.headcount_unit}</Typography> </> :
+                  <Typography color="success">總共需 {request.headcount_got}{request.headcount_unit}，已全部到位!</Typography>}
+              </Box>
+            </Box>
+            <Box sx={{ mt: 1 }}>
+              <CustomProgressBar percentage={(request.headcount_got / request.headcount_need) * 100} />
+            </Box>
+            <Box sx={{ mt: 2 }}>
+              <TextField
+                fullWidth required
+                label="加入人數"
+                placeholder=""
+                type="number"
+                value={joinCount}
+                onChange={e => setJoinCount(e.target.value)}
+                inputProps={{ min: 1, max: maxNeeded }}
+              />
+            </Box>
+          </Box></>}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="inherit">取消</Button>
+        <Button variant="contained" onClick={onConfirm}
+          disabled={joinCount < 1 || joinCount > maxNeeded}
+        >確認加入</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
