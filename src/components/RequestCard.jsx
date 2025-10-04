@@ -73,13 +73,9 @@ export default function RequestCard({ request, onEdit, onDelivery }) {
 
     }
 
-    // React.useEffect(() => {
-    //     console.log(request)
-    // }, [])
-
     return (
         <div style={{ position: "relative" }}>
-            <Card sx={{ mb: 2, background: isRequestCompleted ? "#dbdbdb" : "inherit" }}>
+            <Card sx={{ mb: 2 }}>
                 {/* {isRequestCompleted && (
                     <div className="stamp">已完成</div>
                 )} */}

@@ -124,7 +124,8 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
               </Typography>
               <Alert severity="primary" sx={{ mt: 1 }}>
                 <AlertTitle>我們期待你的出現！</AlertTitle>
-                若你誤觸送出而顯示這個畫面，請點選下方的按鈕返回
+                <b>若你誤觸送出而顯示這個畫面，請點選下方的按鈕返回</b><br />
+                {(request.headcount_got + Number(joinCount) === request.headcount_need) && "在你加入後，這個需求將會被標示為已完成，如需再次查看這個需求，請點選上方⌈已完成⌋頁籤"}
               </Alert>
             </>}
           </Typography>

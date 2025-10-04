@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Box, Button, ThemeProvider, CssBaseline } from "@mui/material";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import RequestCard from "./components/RequestCard";
@@ -29,13 +31,16 @@ export default function App() {
 
   const [editData, setEditData] = useState();
   const [deliveryData, setDeliveryData] = useState();
-  useEffect(() => {
-    loadData(page, true);
-  }, [page]);
 
-  const loadData = async (offset, shouldScrollThePage) => {
+  const [requestState, setRequestState] = useState('active')
+
+  useEffect(() => {
+    loadData(page, requestState, true);
+  }, [page, requestState]);
+
+  const loadData = async (offset, state, shouldScrollThePage) => {
     const result = await safeApiRequest(
-      `https://guangfu250923.pttapp.cc/human_resources?limit=20&offset=${offset * 20}`
+      `https://guangfu250923.pttapp.cc/human_resources?limit=20&offset=${offset * 20}&status=${state}`
     );
     if (result.success) {
       //擋掉soft deleted 的資料:  {status:"need_delete"}
@@ -79,7 +84,7 @@ export default function App() {
     if (isSuccess) {
       setToastMsg("需求更新成功!");
       setOpenEdit(false);
-      loadData(page, false);
+      loadData(page, requestState, false);
     } else {
       setToastMsg("需求更新失敗，請再試一次!");
     }
@@ -89,7 +94,7 @@ export default function App() {
     if (isSuccess) {
       setToastMsg("加入成功!");
       setOpenDelivery(false);
-      loadData(page, false);
+      loadData(page, requestState, false);
     } else {
       setToastMsg("加入失敗，請再試一次!");
     }
@@ -98,7 +103,7 @@ export default function App() {
     if (isSuccess) {
       setToastMsg("需求已送出!");
       setOpenCreate(false);
-      loadData(page, false);
+      loadData(page, requestState, false);
     } else {
       setToastMsg("需求送出失敗，請再試一次!");
     }
@@ -110,6 +115,15 @@ export default function App() {
         <CssBaseline />
         <Header onCreate={() => setOpenCreate(true)} />
         <Container sx={{ mt: 3 }}>
+          <Box sx={{ width: '100%', mb: 1 }}>
+            <Tabs
+              value={requestState}
+              onChange={(e, v) => { setRequestState(v); setPage(0) }}
+            >
+              <Tab value="active" label="尚缺志工" />
+              <Tab value="completed" label="已完成" />
+            </Tabs>
+          </Box>
           {requests.map((req) => (
             <RequestCard
               key={req.id}
@@ -130,7 +144,6 @@ export default function App() {
         <CreateDialog open={openCreate} onSubmittedCallback={onCreateSubmittedCallback} onClose={() => setOpenCreate(false)} />
         <EditDialog open={openEdit} onSubmittedCallback={onEditSubmittedCallback} request={editData} onClose={() => setOpenEdit(false)} />
         <DeliveryDialog open={openDelivery} onSubmittedCallback={onDeliverySubmittedCallback} onClose={() => setOpenDelivery(false)} request={deliveryData} />
-
 
 
         <Toast message={toastMsg} onClose={() => setToastMsg("")} />
