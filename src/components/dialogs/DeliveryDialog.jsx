@@ -50,6 +50,7 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
     );
     if (result.success) {
       onSubmittedCallback(true)
+      setJoinCount(1)
     }
     else {
       onSubmittedCallback(false)

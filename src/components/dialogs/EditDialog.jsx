@@ -47,6 +47,15 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
     );
     if (result.success) {
       onSubmittedCallback(true)
+      setForm({
+        org: "",
+        phone: "",
+        address: "",
+        assignment_notes: "",
+        headcount_need: 1,
+        headcount_unit: "",
+        role_name: ""
+      })
     }
     else {
       onSubmittedCallback(false)

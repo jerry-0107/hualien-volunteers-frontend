@@ -48,6 +48,16 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
     );
     if (result.success) {
       onSubmittedCallback(true)
+      setForm({
+        org: "",
+        phone: "",
+        address: "花蓮縣光復鄉",
+        assignment_notes: "",
+        headcount_need: 1,
+        headcount_unit: "人",
+        role_name: "",
+        role_type: "一般志工"
+      })
     }
     else {
       onSubmittedCallback(false)
