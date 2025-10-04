@@ -35,7 +35,7 @@ export default function App() {
 
   const loadData = async (offset, shouldScrollThePage) => {
     const result = await safeApiRequest(
-      `https://guangfu250923.pttapp.cc/human_resources?limit=20&offset=${offset * 20}&status=active`
+      `https://guangfu250923.pttapp.cc/human_resources?limit=20&offset=${offset * 20}`
     );
     if (result.success) {
       //擋掉soft deleted 的資料:  {status:"need_delete"}
