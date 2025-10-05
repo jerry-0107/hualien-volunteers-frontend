@@ -1,5 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
 
 export default function Header({ onCreate }) {
     return (
@@ -9,7 +10,7 @@ export default function Header({ onCreate }) {
                     <Typography variant="h5">志工媒合</Typography>
                 </Box>
                 <Button variant="contained" onClick={onCreate}>
-                    ＋ 新增人力需求
+                    <AddIcon /> 新增人力需求
                 </Button>
             </Toolbar>
         </AppBar>
