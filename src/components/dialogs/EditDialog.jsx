@@ -37,7 +37,7 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
     const payload = {
       ...form, headcount_need: Number(form.headcount_need)
     }
-    if (request.headcount_got >= form.headcount_need) {
+    if (request.headcount_got >= Number(form.headcount_need)) {
       payload.headcount_need = request.headcount_got
       payload.status = "completed"
       payload.is_completed = true
