@@ -73,7 +73,12 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
   }
 
   return (
-    <><Dialog open={open} fullWidth maxWidth="sm">
+    <><Dialog open={open} fullWidth maxWidth="sm" sx={{
+      '& .MuiPaper-root': {
+        maxHeight: '70%',
+        top: '-10%'
+      },
+    }}>
       <DialogTitle>人力需求</DialogTitle>
       <DialogContent>
         <Box sx={{ mb: 2, pt: 1 }}>
