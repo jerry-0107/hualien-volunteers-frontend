@@ -74,7 +74,8 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
   }
 
   return (
-    <><StyledDialog open={open} fullWidth maxWidth="sm" sx={{
+    <>
+    <StyledDialog open={open} fullWidth maxWidth="sm" sx={{
       '& .MuiPaper-root': {
         maxHeight: '70%',
         top: '-10%'
@@ -209,7 +210,7 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
           確認新增
         </Button>
       </DialogActions>
-    </StyledDialog >
+    </StyledDialog>
 
       <StyledDialog open={displayConfirmDialog} fullWidth maxWidth="sm">
         <DialogTitle>確認新增需求</DialogTitle>

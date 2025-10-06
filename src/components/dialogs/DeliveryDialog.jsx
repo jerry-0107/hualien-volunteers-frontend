@@ -70,7 +70,8 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
 
 
   return (
-    <><StyledDialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <>
+    <StyledDialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>人力派遣</DialogTitle>
       <DialogContent>
         {request && <><Typography variant="body2" sx={{ mb: 1 }}>目前人力需求進度</Typography>
