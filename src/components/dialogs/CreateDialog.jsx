@@ -210,7 +210,13 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
       </DialogActions>
     </Dialog >
 
-      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm">
+      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm"
+        sx={{
+          '& .MuiPaper-root': {
+            maxHeight: '70%',
+            top: '-10%'
+          },
+        }}>
         <DialogTitle>確認新增需求</DialogTitle>
         <DialogContent>
           <Typography>
