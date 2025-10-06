@@ -17,6 +17,9 @@ import { safeApiRequest } from "./utils/helpers";
 import isCompleted from "./utils/isCompleted";
 
 import theme from './colorPalatte'
+import { Maintenance } from "./components/Maintenance";
+
+import { Analytics } from "@vercel/analytics/react"
 
 export default function App() {
   const [requests, setRequests] = useState([]);
@@ -146,8 +149,9 @@ export default function App() {
         <EditDialog open={openEdit} onSubmittedCallback={onEditSubmittedCallback} request={editData} onClose={() => setOpenEdit(false)} />
         <DeliveryDialog open={openDelivery} onSubmittedCallback={onDeliverySubmittedCallback} onClose={() => setOpenDelivery(false)} request={deliveryData} />
 
-
+        {/* <Maintenance/> */}
         <Toast message={toastMsg} onClose={() => setToastMsg("")} />
+        <Analytics />
       </ThemeProvider>
     </>
   );
