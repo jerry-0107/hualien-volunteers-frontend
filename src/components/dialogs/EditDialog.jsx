@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, TextField, Box, Typography, AlertTitle, Alert
+  DialogTitle, DialogContent, DialogActions,
+  Button, TextField, Box, Typography, Alert,AlertTitle
 } from "@mui/material";
+import StyledDialog from "./StyledDialog";
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -75,13 +76,7 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
 
 
   return (
-    <><Dialog open={open} fullWidth maxWidth="sm"
-      sx={{
-        '& .MuiPaper-root': {
-          maxHeight: '70%',
-          top: '-10%'
-        },
-      }}>
+    <><StyledDialog open={open} fullWidth maxWidth="sm">
       <DialogTitle>修改需求</DialogTitle>
       <DialogContent>
         <Box sx={{ mb: 2, pt: 1 }}>
@@ -203,19 +198,13 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
           確認修改
         </Button>
       </DialogActions>
-    </Dialog>
+    </StyledDialog>
 
 
 
 
 
-      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm"
-        sx={{
-          '& .MuiPaper-root': {
-            maxHeight: '70%',
-            top: '-10%'
-          },
-        }}>
+      <StyledDialog open={displayConfirmDialog} fullWidth maxWidth="sm">
         <DialogTitle>確認修改需求</DialogTitle>
         <DialogContent>
           <Typography>
@@ -235,7 +224,7 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
           <Button onClick={() => setDisplayConfirmDialog(false)} color="inherit">返回修改</Button>
           <Button variant="contained" onClick={() => onConfirm(form)} loading={isLoading}>確認送出</Button>
         </DialogActions>
-      </Dialog>
+      </StyledDialog>
     </>
   );
 }
