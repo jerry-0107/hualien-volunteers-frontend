@@ -192,7 +192,7 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
               及<a href="https://sites.google.com/view/guangfu250923/Policy" target="_blank">隱私權條款</a>之使用</>}
           />
 
-          <Alert severity="primary"><AlertTitle>注意: 目前無法修改需求</AlertTitle>請再次確認資料是否正確</Alert>
+          <Alert severity="primary"><AlertTitle>注意：目前無法修改需求</AlertTitle>請再次確認資料是否正確</Alert>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="inherit">取消</Button>
