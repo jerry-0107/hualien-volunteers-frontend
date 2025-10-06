@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, TextField, Box, Typography
+  Button, TextField, Box, Typography, AlertTitle, Alert
 } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
@@ -36,6 +36,11 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
     setIsLoading(true)
     const payload = {
       ...form, headcount_need: Number(form.headcount_need)
+    }
+    if (request.headcount_got >= Number(form.headcount_need)) {
+      payload.headcount_need = request.headcount_got
+      payload.status = "completed"
+      payload.is_completed = true
     }
     const result = await safeApiRequest(
       `https://guangfu250923.pttapp.cc/human_resources/${request.id}`,
@@ -209,6 +214,7 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
                 <b>地址：</b>{form.address}<br />
                 <b>備註：</b>{form.assignment_notes}<br />
                 <b>需求：</b>{form.role_type} | {form.role_name} | {form.headcount_need}{form.headcount_unit}
+                {request.headcount_got >= Number(form.headcount_need) && <Alert severity="primary"><AlertTitle>需求將被標示為完成</AlertTitle>修改後的需求 ({form.headcount_need}{form.headcount_unit})，少於或等於目前已到位的人力({request.headcount_got}{form.headcount_unit})，為避免造成系統問題，送出修改後此需求將被標示為已完成<p><b>如仍有需求，請重新點選新增需求</b></p></Alert>}
               </Typography>
             </>}
           </Typography>
