@@ -69,7 +69,13 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
 
 
   return (
-    <><Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <><Dialog open={open} onClose={onClose} fullWidth maxWidth="sm"
+      sx={{
+        '& .MuiPaper-root': {
+          maxHeight: '70%',
+          top: '-10%'
+        },
+      }}>
       <DialogTitle>人力派遣</DialogTitle>
       <DialogContent>
         {request && <><Typography variant="body2" sx={{ mb: 1 }}>目前人力需求進度</Typography>
@@ -114,7 +120,13 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
 
 
 
-      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm">
+      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm"
+        sx={{
+          '& .MuiPaper-root': {
+            maxHeight: '70%',
+            top: '-10%'
+          },
+        }}>
         <DialogTitle>確認加入 {request && request.org}</DialogTitle>
         <DialogContent>
           <Typography>

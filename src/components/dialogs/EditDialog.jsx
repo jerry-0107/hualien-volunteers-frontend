@@ -75,7 +75,13 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
 
 
   return (
-    <><Dialog open={open} fullWidth maxWidth="sm">
+    <><Dialog open={open} fullWidth maxWidth="sm"
+      sx={{
+        '& .MuiPaper-root': {
+          maxHeight: '70%',
+          top: '-10%'
+        },
+      }}>
       <DialogTitle>修改需求</DialogTitle>
       <DialogContent>
         <Box sx={{ mb: 2, pt: 1 }}>
@@ -203,7 +209,13 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
 
 
 
-      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm">
+      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm"
+        sx={{
+          '& .MuiPaper-root': {
+            maxHeight: '70%',
+            top: '-10%'
+          },
+        }}>
         <DialogTitle>確認修改需求</DialogTitle>
         <DialogContent>
           <Typography>
