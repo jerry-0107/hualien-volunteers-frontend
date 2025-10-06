@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Box, Button, ThemeProvider, CssBaseline } from "@mui/material";
+import { Container, Box, Button, ThemeProvider, CssBaseline, CircularProgress } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Header from "./components/Header";
@@ -20,6 +20,9 @@ import theme from './colorPalatte'
 import { Maintenance } from "./components/Maintenance";
 
 import { Analytics } from "@vercel/analytics/react"
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+
 
 export default function App() {
   const [requests, setRequests] = useState([]);
@@ -72,6 +75,11 @@ export default function App() {
     }
   };
 
+  function handlePageChange(newPage) {
+    setRequests([])
+    setPage(newPage)
+  }
+
 
   function EditRequest(data) {
     setEditData(data)
@@ -122,12 +130,17 @@ export default function App() {
           <Box sx={{ width: '100%', mb: 1 }}>
             <Tabs
               value={requestState}
-              onChange={(e, v) => { setRequestState(v); setPage(0) }}
+              onChange={(e, v) => { setRequestState(v); setRequests([]); setPage(0) }}
             >
               <Tab value="active" label="尚缺志工" />
               <Tab value="completed" label="已完成" />
             </Tabs>
           </Box>
+          {requests.length === 0 && <>
+            <Stack spacing={1}>
+              <Skeleton variant="text" sx={{ fontSize: '5rem' }} />
+            </Stack>
+          </>}
           {requests.map((req) => (
             <RequestCard
               key={req.id}
@@ -137,7 +150,7 @@ export default function App() {
             />
           ))}
 
-          <Pagination page={page + 1} onPageChange={setPage} count={totalPage} />
+          <Pagination page={page + 1} onPageChange={handlePageChange} count={totalPage} />
 
           <Box sx={{ mt: 3 }}>
             <Footer />

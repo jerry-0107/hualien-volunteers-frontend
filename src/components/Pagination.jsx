@@ -3,8 +3,8 @@ import { Box, Typography, Pagination } from "@mui/material";
 
 export default function MyPagination({ page, count = 10, onPageChange }) {
     return (
-        <Box sx={{ mt: 2, display: "flex", alignItems: "center", gap: 1 }}>
-            <Typography variant="body2">你在第 {page} 頁，跳到第</Typography>
+        <Box sx={{ mt: 2, display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
+            {/* <Typography variant="body2">你在第 {page} 頁，跳到第</Typography> */}
             <Pagination
                 count={count}
                 page={page}
@@ -12,7 +12,7 @@ export default function MyPagination({ page, count = 10, onPageChange }) {
                 color="primary"
                 size="small"
             />
-            <Typography variant="body2">頁</Typography>
+            {/* <Typography variant="body2">頁</Typography> */}
         </Box>
     );
 }
