@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
+  DialogTitle, DialogContent, DialogActions,
   Button, TextField, Box, Typography
 } from "@mui/material";
+import StyledDialog from "./StyledDialog";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
@@ -73,7 +74,7 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
   }
 
   return (
-    <><Dialog open={open} fullWidth maxWidth="sm" sx={{
+    <><StyledDialog open={open} fullWidth maxWidth="sm" sx={{
       '& .MuiPaper-root': {
         maxHeight: '70%',
         top: '-10%'
@@ -208,9 +209,9 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
           確認新增
         </Button>
       </DialogActions>
-    </Dialog >
+    </StyledDialog >
 
-      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm">
+      <StyledDialog open={displayConfirmDialog} fullWidth maxWidth="sm">
         <DialogTitle>確認新增需求</DialogTitle>
         <DialogContent>
           <Typography>
@@ -229,7 +230,7 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
           <Button onClick={() => setDisplayConfirmDialog(false)} color="inherit">返回修改</Button>
           <Button variant="contained" onClick={() => onConfirm(form)} loading={isLoading}>確認送出</Button>
         </DialogActions>
-      </Dialog>
+      </StyledDialog>
     </>
   );
 }

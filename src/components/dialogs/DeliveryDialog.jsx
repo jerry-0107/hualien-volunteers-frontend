@@ -1,8 +1,9 @@
 import React from "react";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
+  DialogTitle, DialogContent, DialogActions,
   Button, Typography, Box, Chip, TextField, Alert, AlertTitle
 } from "@mui/material";
+import StyledDialog from "./StyledDialog";
 import isCompleted from "../../utils/isCompleted";
 import CustomProgressBar from "../Progress";
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -69,7 +70,7 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
 
 
   return (
-    <><Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <><StyledDialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>人力派遣</DialogTitle>
       <DialogContent>
         {request && <><Typography variant="body2" sx={{ mb: 1 }}>目前人力需求進度</Typography>
@@ -107,14 +108,14 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
           disabled={joinCount < 1 || joinCount > maxNeeded}
         >確認加入</Button>
       </DialogActions>
-    </Dialog>
+    </StyledDialog>
 
 
 
 
 
 
-      <Dialog open={displayConfirmDialog} fullWidth maxWidth="sm">
+      <StyledDialog open={displayConfirmDialog} fullWidth maxWidth="sm">
         <DialogTitle>確認加入 {request && request.org}</DialogTitle>
         <DialogContent>
           <Typography>
@@ -134,7 +135,7 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
           <Button onClick={() => setDisplayConfirmDialog(false)} color="inherit">返回修改</Button>
           <Button variant="contained" onClick={onConfirm} loading={isLoading}>確認加入</Button>
         </DialogActions>
-      </Dialog>
+      </StyledDialog>
 
 
     </>
