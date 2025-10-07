@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   DialogTitle, DialogContent, DialogActions,
-  Button, TextField, Box, Typography
+  Button, TextField, Box, Typography, Alert, AlertTitle
 } from "@mui/material";
 import StyledDialog from "./StyledDialog";
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -75,142 +75,144 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
 
   return (
     <>
-    <StyledDialog open={open} fullWidth maxWidth="sm" sx={{
-      '& .MuiPaper-root': {
-        maxHeight: '70%',
-        top: '-10%'
-      },
-    }}>
-      <DialogTitle>人力需求</DialogTitle>
-      <DialogContent>
-        <Box sx={{ mb: 2, pt: 1 }}>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth required
-                label="單位名稱"
-                placeholder="陳先生"
-                name="org"
-                value={form.org}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="手機號碼"
-                placeholder="0912345678"
-                name="phone"
-                value={form.phone}
-                onChange={handleChange}
-                helperText="注意！手機號碼將會公開在網路上"
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 12 }}>
-              <TextField
-                fullWidth required
-                label="地址"
-                name="address"
-                value={form.address}
-                onChange={handleChange}
-              // sx={{ mb: 2 }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 12 }}>
-              <TextField
-                fullWidth multiline rows={3}
-                label="備註"
-                name="assignment_notes"
-                placeholder="集合時間地點/報到流程/其他注意事項..."
-                value={form.assignment_notes}
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid size={{ xs: 6, md: 6 }}>
-              <FormControl required fullWidth>
-                <InputLabel id="role-type-select-label">需求類別</InputLabel>
-                <Select
-                  required
-                  labelId="role-type-select-label"
-                  name="role_type"
-                  label="需求類別"
-                  value={form.role_type}
+      <StyledDialog open={open} fullWidth maxWidth="sm" sx={{
+        '& .MuiPaper-root': {
+          maxHeight: '70%',
+          top: '-10%'
+        },
+      }}>
+        <DialogTitle>人力需求</DialogTitle>
+        <DialogContent>
+          <Box sx={{ mb: 2, pt: 1 }}>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth required
+                  label="單位名稱"
+                  placeholder="陳先生"
+                  name="org"
+                  value={form.org}
                   onChange={handleChange}
-                >
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  label="手機號碼"
+                  placeholder="0912345678"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  helperText="注意！手機號碼將會公開在網路上"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 12 }}>
+                <TextField
+                  fullWidth required
+                  label="地址"
+                  name="address"
+                  value={form.address}
+                  onChange={handleChange}
+                // sx={{ mb: 2 }}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 12 }}>
+                <TextField
+                  fullWidth multiline rows={3}
+                  label="備註"
+                  name="assignment_notes"
+                  placeholder="集合時間地點/報到流程/其他注意事項..."
+                  value={form.assignment_notes}
+                  onChange={handleChange}
+                />
+              </Grid>
 
-                  <MenuItem value={"一般志工"}>一般志工</MenuItem>
-                  <MenuItem value={"清潔/整理"}>清潔/整理</MenuItem>
-                  <MenuItem value={"醫療照護"}>醫療照護</MenuItem>
-                  <MenuItem value={"後勤支援"}>後勤支援</MenuItem>
-                  <MenuItem value={"專業技術"}>專業技術</MenuItem>
-                  <MenuItem value={"其他"}>其他</MenuItem>
+              <Grid size={{ xs: 6, md: 6 }}>
+                <FormControl required fullWidth>
+                  <InputLabel id="role-type-select-label">需求類別</InputLabel>
+                  <Select
+                    required
+                    labelId="role-type-select-label"
+                    name="role_type"
+                    label="需求類別"
+                    value={form.role_type}
+                    onChange={handleChange}
+                  >
 
-                </Select>
-              </FormControl>
+                    <MenuItem value={"一般志工"}>一般志工</MenuItem>
+                    <MenuItem value={"清潔/整理"}>清潔/整理</MenuItem>
+                    <MenuItem value={"醫療照護"}>醫療照護</MenuItem>
+                    <MenuItem value={"後勤支援"}>後勤支援</MenuItem>
+                    <MenuItem value={"專業技術"}>專業技術</MenuItem>
+                    <MenuItem value={"其他"}>其他</MenuItem>
+
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 6, md: 6 }}>
+                <TextField
+                  fullWidth required
+                  label="需求名稱"
+                  placeholder="鏟子超人"
+                  name="role_name"
+                  type="text"
+                  value={form.role_name}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid size={{ xs: 6, md: 6 }}>
+                <TextField
+                  fullWidth required
+                  label="數量"
+                  placeholder=""
+                  name="headcount_need"
+                  type="number"
+                  value={form.headcount_need}
+                  onChange={handleChange}
+                  inputProps={{ min: 1 }}
+                />
+              </Grid>
+              <Grid size={{ xs: 6, md: 6 }}>
+                <TextField
+                  fullWidth required
+                  label="數量單位"
+                  placeholder="人"
+                  name="headcount_unit"
+                  type="text"
+                  value={form.headcount_unit}
+                  onChange={handleChange}
+                />
+              </Grid>
             </Grid>
-            <Grid size={{ xs: 6, md: 6 }}>
-              <TextField
-                fullWidth required
-                label="需求名稱"
-                placeholder="鏟子超人"
-                name="role_name"
-                type="text"
-                value={form.role_name}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid size={{ xs: 6, md: 6 }}>
-              <TextField
-                fullWidth required
-                label="數量"
-                placeholder=""
-                name="headcount_need"
-                type="number"
-                value={form.headcount_need}
-                onChange={handleChange}
-                inputProps={{ min: 1 }}
-              />
-            </Grid>
-            <Grid size={{ xs: 6, md: 6 }}>
-              <TextField
-                fullWidth required
-                label="數量單位"
-                placeholder="人"
-                name="headcount_unit"
-                type="text"
-                value={form.headcount_unit}
-                onChange={handleChange}
-              />
-            </Grid>
-          </Grid>
-        </Box>
+          </Box>
 
 
-        <FormControlLabel required control={<Checkbox onChange={e => setAgreeTerms(x => !x)} value={agreeTerms} />}
-          label={<>我已理解本平台<a href="https://docs.google.com/document/d/1JOjahSi5om1Gx4mydQ8FiOzZMVwLGimY5NPz6-BWZKw/edit?usp=sharing" target="_blank">服務政策</a>
-            及<a href="https://sites.google.com/view/guangfu250923/Policy" target="_blank">隱私權條款</a>之使用</>}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="inherit">取消</Button>
-        <Button
-          variant="contained"
-          onClick={() => setDisplayConfirmDialog(true)}
-          disabled={
-            form.address === "" ||
-            form.org === "" ||
-            form.role_name === "" ||
-            !form.role_type ||
-            Number(form.headcount_need) < 1 ||
-            form.headcount_unit === "" ||
-            !agreeTerms
-          }
-        >
-          確認新增
-        </Button>
-      </DialogActions>
-    </StyledDialog>
+          <FormControlLabel required control={<Checkbox onChange={e => setAgreeTerms(x => !x)} value={agreeTerms} />}
+            label={<>我已理解本平台<a href="https://sites.google.com/view/guangfu250923/Terms-of-Service" target="_blank">服務條款</a>
+              及<a href="https://sites.google.com/view/guangfu250923/Policy" target="_blank">隱私權政策</a>之使用</>}
+          />
+
+          <Alert severity="primary"><AlertTitle>注意：目前無法修改需求</AlertTitle>請再次確認資料是否正確</Alert>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose} color="inherit">取消</Button>
+          <Button
+            variant="contained"
+            onClick={() => setDisplayConfirmDialog(true)}
+            disabled={
+              form.address === "" ||
+              form.org === "" ||
+              form.role_name === "" ||
+              !form.role_type ||
+              Number(form.headcount_need) < 1 ||
+              form.headcount_unit === "" ||
+              !agreeTerms
+            }
+          >
+            確認新增
+          </Button>
+        </DialogActions>
+      </StyledDialog>
 
       <StyledDialog open={displayConfirmDialog} fullWidth maxWidth="sm">
         <DialogTitle>確認新增需求</DialogTitle>
@@ -224,6 +226,8 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
                 <b>備註：</b>{form.assignment_notes}<br />
                 <b>需求：</b>{form.role_type} | {form.role_name} | {form.headcount_need}{form.headcount_unit}
               </Typography>
+              <Alert severity="primary"><AlertTitle>再次提醒：目前無法修改需求</AlertTitle>請再次確認資料是否正確</Alert>
+
             </>
           </Typography>
         </DialogContent>

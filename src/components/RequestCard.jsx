@@ -108,7 +108,7 @@ export default function RequestCard({ request, onEdit, onDelivery }) {
                     </Box>
                 </CardContent>
                 {!isRequestCompleted ? <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <Button variant="outlined" size="small" onClick={() => onEdit(request)} disabled={isRequestCompleted}>
+                    <Button variant="outlined" size="small" onClick={() => onEdit(request)} disabled={true}>
                         修改需求
                     </Button>
                     <Button size="small" variant="contained" onClick={() => onDelivery(request)} disabled={isRequestCompleted}>
