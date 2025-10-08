@@ -188,8 +188,8 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
 
 
           <FormControlLabel required control={<Checkbox onChange={e => setAgreeTerms(x => !x)} value={agreeTerms} />}
-            label={<>我已理解本平台<a href="https://sites.google.com/view/guangfu250923/Terms-of-Service" target="_blank">服務條款</a>
-              及<a href="https://sites.google.com/view/guangfu250923/Policy" target="_blank">隱私權政策</a>之使用</>}
+            label={<>我已理解本平台<a href="https://gf250923.org/terms" target="_blank">服務條款</a>
+              及<a href="https://gf250923.org/privacy" target="_blank">隱私權政策</a>之使用</>}
           />
 
           <Alert severity="primary"><AlertTitle>注意：目前無法修改需求</AlertTitle>請再次確認資料是否正確</Alert>
