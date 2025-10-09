@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Box, Button, ThemeProvider, CssBaseline, CircularProgress } from "@mui/material";
+import { Container, Box, Button, ThemeProvider, CssBaseline, Chip, Typography } from "@mui/material";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Header from "./components/Header";
@@ -40,30 +40,43 @@ export default function App() {
   const [deliveryData, setDeliveryData] = useState();
 
   const [requestState, setRequestState] = useState('active')
+  const [listFilter, setListFilter] = React.useState([""])
+
+  const [isLoading, setIsLoading] = React.useState(false)
 
   useEffect(() => {
     loadData(page, requestState, true);
-  }, [page, requestState]);
+  }, [page, requestState, listFilter]);
+
+  function renderCards(data) {
+    const requests = data.filter(d => d.status !== "need_delete");
+
+    //依據更新時間進行排序
+    const sortedRequests = [...requests].sort((a, b) => b.updated_at - a.updated_at);
+
+    const filtreedRequest = [...sortedRequests].filter(item => {
+      for (let i = 0; i < listFilter.length; i++) {
+        if (item.assignment_notes.includes(listFilter[i]) || item.role_name.includes(listFilter[i]) || item.role_type.includes(listFilter[i])) {
+          return true
+        }
+      }
+      return false
+    })
+
+
+    setRequests(filtreedRequest)
+
+  }
 
   const loadData = async (offset, state, shouldScrollThePage) => {
+    setIsLoading(true)
     const result = await safeApiRequest(
       `https://guangfu250923.pttapp.cc/human_resources?limit=20&offset=${offset * 20}&status=${state}`
     );
     if (result.success) {
+      setIsLoading(false)
       //擋掉soft deleted 的資料:  {status:"need_delete"}
-      const requests = result.data.member.filter(d => d.status !== "need_delete");
-
-      //依據完成與否進行排序
-      const sortedRequests = [...requests].sort((a, b) => {
-        const aCompleted = isCompleted(a);
-        const bCompleted = isCompleted(b);
-        if (aCompleted && !bCompleted) return 1;
-        if (!aCompleted && bCompleted) return -1;
-        return 0;
-      });
-
-      setRequests(sortedRequests)
-
+      renderCards(result.data.member)
       setTotalPage((result.data.totalItems % 20 === 0) ? (result.data.totalItems / 20) : Math.floor(result.data.totalItems / 20) + 1)
 
       if (shouldScrollThePage) {
@@ -135,10 +148,23 @@ export default function App() {
               <Tab value="active" label="尚缺志工" />
               <Tab value="completed" label="已完成" />
             </Tabs>
+
           </Box>
-          {requests.length === 0 && <>
+          <Box sx={{ width: "100%", mb: 1, userSelect: "none" }}>
+            <Chip color={listFilter[0] === "" ? "primary" : ""} label="所有需求" sx={{ mr: 1 }} onClick={() => { setListFilter([""]) }} />
+            <Chip color={listFilter.includes("一般志工") ? "primary" : ""} label="一般志工" sx={{ mr: 1 }} onClick={() => { setListFilter(["一般志工"]) }} />
+            <Chip color={listFilter.includes("水電") ? "primary" : ""} label="水電" sx={{ mr: 1 }} onClick={() => { setListFilter(["水電"]) }} />
+            <Chip color={listFilter.includes("機具") ? "primary" : ""} label="機具" sx={{ mr: 1 }} onClick={() => { setListFilter(["機具", "山貓", "怪手", "挖土機"]) }} />
+
+          </Box>
+          {(requests.length === 0 && isLoading) && <>
             <Stack spacing={1}>
               <Skeleton variant="text" sx={{ fontSize: '5rem' }} />
+            </Stack>
+          </>}
+          {(requests.length === 0 && !isLoading) && <>
+            <Stack spacing={1}>
+              <Typography variant="h6">此頁查無符合條件的需求，您可以點選下方分頁按鈕，切換至其他分頁</Typography>
             </Stack>
           </>}
           {requests.map((req) => (
