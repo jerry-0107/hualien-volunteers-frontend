@@ -42,13 +42,19 @@ export default function App() {
   const [requestState, setRequestState] = useState('active')
   const [listFilter, setListFilter] = React.useState([""])
 
+  const [originalData, setOriginalData] = React.useState([])
+
   const [isLoading, setIsLoading] = React.useState(false)
 
   useEffect(() => {
     loadData(page, requestState, true);
-  }, [page, requestState, listFilter]);
+  }, [page, requestState]);
 
+  React.useEffect(() => {
+    renderCards(originalData)
+  }, [listFilter])
   function renderCards(data) {
+    //擋掉soft deleted 的資料:  {status:"need_delete"}
     const requests = data.filter(d => d.status !== "need_delete");
 
     //依據更新時間進行排序
@@ -74,8 +80,9 @@ export default function App() {
       `https://guangfu250923.pttapp.cc/human_resources?limit=20&offset=${offset * 20}&status=${state}`
     );
     if (result.success) {
+      setOriginalData(result.data.member)
       setIsLoading(false)
-      //擋掉soft deleted 的資料:  {status:"need_delete"}
+
       renderCards(result.data.member)
       setTotalPage((result.data.totalItems % 20 === 0) ? (result.data.totalItems / 20) : Math.floor(result.data.totalItems / 20) + 1)
 

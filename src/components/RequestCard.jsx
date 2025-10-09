@@ -17,7 +17,7 @@ import { useTheme } from '@mui/material/styles';
 import RoomIcon from '@mui/icons-material/Room';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-
+import PersonIcon from '@mui/icons-material/Person';
 import isCompleted from "../utils/isCompleted";
 
 function getRelativeTime(timestamp) {
@@ -84,9 +84,9 @@ export default function RequestCard({ request, onEdit, onDelivery }) {
                     <Typography variant="body2">
                         <RoomIcon sx={{ fontSize: "inherit", verticalAlign: "text-top" }} /> <a style={{ color: "inherit" }} href={getGoogleMapUrl(request.address)} target="_blank">{request.address}</a>
                     </Typography>
-                    
-                        <Typography variant="body2"><PhoneIcon sx={{ fontSize: "inherit", verticalAlign: "text-top" }} /> {request.phone?request.phone:"(未填寫電話號碼)"}</Typography>
-                
+
+                    <Typography variant="body2"><PersonIcon sx={{ fontSize: "inherit", verticalAlign: "text-top" }} /> {request.phone ? request.phone : "(未填寫電話號碼)"}</Typography>
+
                     <Typography variant="body2"><AccessTimeIcon sx={{ fontSize: "inherit", verticalAlign: "text-top" }} /> 最後更新於 {getRelativeTime(request.updated_at)}</Typography>
 
                     {request.assignment_notes && (

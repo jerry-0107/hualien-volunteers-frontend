@@ -15,7 +15,7 @@ export default function Header({ onCreate }) {
 			console.log('[GA Debug] click_create_button: 新增人力需求');
 		}
 
-		
+
 		if (onCreate) onCreate();
 	};
 
@@ -25,8 +25,8 @@ export default function Header({ onCreate }) {
 				<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
 					<Typography variant="h5">志工媒合</Typography>
 				</Box>
-				<Button variant="contained" onClick={handleCreateClick}>
-					<AddIcon /> 新增人力需求
+				<Button variant="contained" onClick={handleCreateClick} startIcon={<AddIcon />}>
+					新增人力需求
 				</Button>
 			</Toolbar>
 		</AppBar>

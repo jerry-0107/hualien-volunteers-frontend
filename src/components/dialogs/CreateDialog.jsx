@@ -97,13 +97,13 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
-                  fullWidth
-                  label="手機號碼"
-                  placeholder="0912345678"
+                  fullWidth required
+                  label="聯絡資訊"
+                  placeholder="手機號碼或line id"
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
-                  helperText="注意！手機號碼將會公開在網路上"
+                  helperText="注意！資訊將會公開在網路上"
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 12 }}>
@@ -175,7 +175,7 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
               <Grid size={{ xs: 6, md: 6 }}>
                 <TextField
                   fullWidth required
-                  label="數量單位"
+                  label="量詞"
                   placeholder="人"
                   name="headcount_unit"
                   type="text"
@@ -202,6 +202,7 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
             disabled={
               form.address === "" ||
               form.org === "" ||
+              form.phone === "" ||
               form.role_name === "" ||
               !form.role_type ||
               Number(form.headcount_need) < 1 ||
