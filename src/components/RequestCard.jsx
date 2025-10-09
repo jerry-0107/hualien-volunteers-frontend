@@ -85,7 +85,7 @@ export default function RequestCard({ request, onEdit, onDelivery }) {
                         <RoomIcon sx={{ fontSize: "inherit", verticalAlign: "text-top" }} /> <a style={{ color: "inherit" }} href={getGoogleMapUrl(request.address)} target="_blank">{request.address}</a>
                     </Typography>
 
-                    <Typography variant="body2"><PersonIcon sx={{ fontSize: "inherit", verticalAlign: "text-top" }} /> {request.phone ? request.phone : "(未填寫電話號碼)"}</Typography>
+                    {!isRequestCompleted && <Typography variant="body2"><PersonIcon sx={{ fontSize: "inherit", verticalAlign: "text-top" }} /> {request.phone ? request.phone : "(未填寫電話號碼)"}</Typography>}
 
                     <Typography variant="body2"><AccessTimeIcon sx={{ fontSize: "inherit", verticalAlign: "text-top" }} /> 最後更新於 {getRelativeTime(request.updated_at)}</Typography>
 

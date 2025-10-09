@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   DialogTitle, DialogContent, DialogActions,
-  Button, TextField, Box, Typography, Alert,AlertTitle
+  Button, TextField, Box, Typography, Alert, AlertTitle
 } from "@mui/material";
 import StyledDialog from "./StyledDialog";
 import Grid from '@mui/material/Grid';
@@ -211,7 +211,7 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
             {request && <>
               <Typography>請再次確認以下資料是否正確：<br />
                 <b>單位名稱：</b>{form.org}<br />
-                <b>手機號碼：</b>{form.phone}<br />
+                <b>聯絡資訊：</b>{form.phone}<br />
                 <b>地址：</b>{form.address}<br />
                 <b>備註：</b>{form.assignment_notes}<br />
                 <b>需求：</b>{form.role_type} | {form.role_name} | {form.headcount_need}{form.headcount_unit}
