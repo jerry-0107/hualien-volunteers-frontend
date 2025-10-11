@@ -146,7 +146,7 @@ export default function EditDialog({ open, onClose, request, onSubmittedCallback
             <Grid size={{ xs: 6, md: 6 }}>
               <TextField
                 fullWidth required
-                label="需求名稱"
+                label="水電/安裝/木工"
                 placeholder="鏟子超人"
                 name="role_name"
                 type="text"
