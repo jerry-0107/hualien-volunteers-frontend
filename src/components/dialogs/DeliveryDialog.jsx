@@ -138,7 +138,7 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
 						</>
 					)}
 					<p>
-						<WarningAmberIcon sx={{ fontSize: "inherit", verticalAlign: 'middle' }} /> 請先<Typography sx={{ display: "inline" }} color='error'>電話聯繫</Typography>並<Typography sx={{ display: "inline" }} color='error'>截圖資訊</Typography>，確認無誤後再進行媒合
+						<WarningAmberIcon sx={{ fontSize: "inherit", verticalAlign: 'middle' }} /> 請先<Typography sx={{ display: "inline" }} color='error'><b>電話聯繫</b></Typography>並<Typography sx={{ display: "inline" }} color='error'><b>截圖資訊</b></Typography>，確認無誤後再進行媒合
 					</p>
 				</DialogContent>
 				<DialogActions>
