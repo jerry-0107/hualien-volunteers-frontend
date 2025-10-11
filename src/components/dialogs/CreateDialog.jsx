@@ -121,7 +121,7 @@ export default function CreateDialog({ open, onClose, onSubmittedCallback = (isS
                   fullWidth multiline rows={3}
                   label="備註"
                   name="assignment_notes"
-                  placeholder="集合時間地點/報到流程/其他注意事項..."
+                  placeholder="為求志工符合需求，請您詳述待修繕物品、協助細節、集合時間"
                   value={form.assignment_notes}
                   onChange={handleChange}
                 />
