@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  DialogTitle, DialogContent, DialogActions,
-  Button, Typography, Box, Chip, TextField, Alert, AlertTitle
+	DialogTitle, DialogContent, DialogActions,
+	Button, Typography, Box, Chip, TextField, Alert, AlertTitle
 } from "@mui/material";
 import StyledDialog from "./StyledDialog";
 import isCompleted from "../../utils/isCompleted";
@@ -9,67 +9,68 @@ import CustomProgressBar from "../Progress";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { safeApiRequest } from "../../utils/helpers";
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 function getRoleTypeColor(role_type, is_completed) {
-  if (is_completed) return ""
+	if (is_completed) return ""
 
-  const TYPE_MAP = {
-    "一般志工": { tag: "一般", cls: "", order: 5 },
-    "清潔/整理": { tag: "清潔/整理", cls: "primary", order: 0 },
-    "醫療照護": { tag: "醫療照護", cls: "error", order: 1 },
-    "後勤支援": { tag: "後勤支援", cls: "success", order: 2 },
-    "專業技術": { tag: "專業技術", cls: "warning", order: 3 },
-    "其他": { tag: "其他", cls: "", order: 4 },
-  };
-  return TYPE_MAP[role_type].cls
+	const TYPE_MAP = {
+		"一般志工": { tag: "一般", cls: "", order: 5 },
+		"清潔/整理": { tag: "清潔/整理", cls: "primary", order: 0 },
+		"醫療照護": { tag: "醫療照護", cls: "error", order: 1 },
+		"後勤支援": { tag: "後勤支援", cls: "success", order: 2 },
+		"專業技術": { tag: "專業技術", cls: "warning", order: 3 },
+		"其他": { tag: "其他", cls: "", order: 4 },
+	};
+	return TYPE_MAP[role_type].cls
 
 }
 export default function DeliveryDialog({ open, onClose, request, onSubmittedCallback = (isSuccess) => { } }) {
-  const isRequestCompleted = isCompleted(request)
-  const theme = useTheme();
-  const isNotPhone = useMediaQuery(theme.breakpoints.up('sm')); //手機以上的螢幕寬度
+	const isRequestCompleted = isCompleted(request)
+	const theme = useTheme();
+	const isNotPhone = useMediaQuery(theme.breakpoints.up('sm')); //手機以上的螢幕寬度
 
-  const [joinCount, setJoinCount] = React.useState(1);
-  const maxNeeded = (!request) ? 0 : request.headcount_need - request.headcount_got;
+	const [joinCount, setJoinCount] = React.useState(1);
+	const maxNeeded = (!request) ? 0 : request.headcount_need - request.headcount_got;
 
-  const [displayConfirmDialog, setDisplayConfirmDialog] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(false)
+	const [displayConfirmDialog, setDisplayConfirmDialog] = React.useState(false)
+	const [isLoading, setIsLoading] = React.useState(false)
 
-  async function onConfirm() {
-    setIsLoading(true)
-    const payload = {
-      headcount_got: request.headcount_got + Number(joinCount),
-      is_completed: request.headcount_got + Number(joinCount) === request.headcount_need,
-      status: request.headcount_got + Number(joinCount) === request.headcount_need ? "completed" : "active"
-    }
-    const result = await safeApiRequest(
-      `https://guangfu250923.pttapp.cc/human_resources/${request.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
-      }
-    );
-    if (result.success) {
-      setIsLoading(false)
-      setDisplayConfirmDialog(false)
-      onSubmittedCallback(true)
-      setJoinCount(1)
+	async function onConfirm() {
+		setIsLoading(true)
+		const payload = {
+			headcount_got: request.headcount_got + Number(joinCount),
+			is_completed: request.headcount_got + Number(joinCount) === request.headcount_need,
+			status: request.headcount_got + Number(joinCount) === request.headcount_need ? "completed" : "active"
+		}
+		const result = await safeApiRequest(
+			`https://guangfu250923.pttapp.cc/human_resources/${request.id}`,
+			{
+				method: "PATCH",
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(payload)
+			}
+		);
+		if (result.success) {
+			setIsLoading(false)
+			setDisplayConfirmDialog(false)
+			onSubmittedCallback(true)
+			setJoinCount(1)
 
-    }
-    else {
-      setIsLoading(false)
-      setDisplayConfirmDialog(false)
-      onSubmittedCallback(false)
-    }
-  }
-
-
+		}
+		else {
+			setIsLoading(false)
+			setDisplayConfirmDialog(false)
+			onSubmittedCallback(false)
+		}
+	}
 
 
-  return (
+
+
+	return (
 		<>
 			<StyledDialog open={open} onClose={onClose} fullWidth maxWidth="sm">
 				<DialogTitle>人力派遣</DialogTitle>
@@ -136,6 +137,9 @@ export default function DeliveryDialog({ open, onClose, request, onSubmittedCall
 							</Box>
 						</>
 					)}
+					<p>
+						<WarningAmberIcon sx={{ fontSize: "inherit", verticalAlign: 'middle' }} /> 請先<Typography sx={{ display: "inline" }} color='error'>電話聯繫</Typography>並<Typography sx={{ display: "inline" }} color='error'>截圖資訊</Typography>，確認無誤後再進行媒合
+					</p>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={onClose} color="inherit">
